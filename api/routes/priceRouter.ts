@@ -3,8 +3,13 @@ import { getPrices, getPriceHistory, getKlineData, getBasePrice } from '../servi
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-  res.json({ success: true, data: getPrices() });
+router.get('/', async (req, res) => {
+  try {
+    const prices = await getPrices();
+    res.json({ success: true, data: prices });
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'Failed to fetch prices' });
+  }
 });
 
 router.get('/:id/history', (req, res) => {
