@@ -1,0 +1,10 @@
+{
+  "prices": {
+    "gold": 4176,
+    "silver": 62,
+    "crude": 69,
+    "copper": 6.3,
+    "electricity": 3.14
+  },
+  "timestamp": 1783042200000
+}
