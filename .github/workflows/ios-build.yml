@@ -36,7 +36,7 @@ jobs:
           cd ios/App
           pod install --repo-update
 
-      - name: Build iOS Debug
+      - name: Build iOS Debug for Simulator
         run: |
           xcodebuild -project ios/App/App.xcodeproj \
             -scheme App \
@@ -47,8 +47,7 @@ jobs:
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO
 
-      - name: Archive iOS Release
-        if: github.ref == 'refs/heads/main'
+      - name: Archive iOS Release (Development)
         run: |
           xcodebuild -project ios/App/App.xcodeproj \
             -scheme App \
@@ -56,19 +55,19 @@ jobs:
             -configuration Release \
             archive \
             -archivePath build/App.xcarchive \
-            CODE_SIGN_IDENTITY="${{ secrets.APPLE_SIGNING_IDENTITY }}" \
-            PROVISIONING_PROFILE_SPECIFIER="${{ secrets.APPLE_PROVISIONING_PROFILE }}"
-        env:
-          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
-          APPLE_PROVISIONING_PROFILE: ${{ secrets.APPLE_PROVISIONING_PROFILE }}
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO
 
-      - name: Export IPA
-        if: github.ref == 'refs/heads/main' && success()
+      - name: Export IPA (Development)
         run: |
           xcodebuild -exportArchive \
             -archivePath build/App.xcarchive \
             -exportPath build/ipa \
-            -exportOptionsPlist exportOptions.plist
+            -exportOptionsPlist exportOptions.plist \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO
         continue-on-error: true
 
       - name: Upload build artifacts
