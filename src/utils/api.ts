@@ -1,7 +1,7 @@
 import { PriceData, PriceHistory, KlineData, KlineType } from '../types';
 
 const isDev = import.meta.env.DEV;
-const BASE_URL = isDev ? '/api' : 'https://gold-price-monitor.vercel.app/api';
+const BASE_URL = isDev ? '/api' : 'https://gold-price-monitor-api.vercel.app/api';
 
 export async function fetchPrices(): Promise<PriceData[]> {
   const response = await fetch(`${BASE_URL}/prices`);
